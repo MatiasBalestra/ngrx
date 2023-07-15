@@ -1,6 +1,10 @@
 import {  Component, OnInit } from '@angular/core';
+import { ItemModel } from '@core/models/Item.interface';
+import { ShowCaseService } from '@modules/show-case/services/show-case.service';
 import {Store} from '@ngrx/store';
-import { loadItems } from 'src/app/state/actions/items.actions';
+import { Observable } from 'rxjs';
+import { loadItems, loadedItems } from 'src/app/state/actions/items.actions';
+import { selectLoading } from 'src/app/state/selectors/items.selectors';
 
 @Component({
   selector: 'app-show-case-page',
@@ -10,17 +14,29 @@ import { loadItems } from 'src/app/state/actions/items.actions';
 export class ShowCasePageComponent implements OnInit {
 
 
+  loading$: Observable<boolean> = new Observable();
 
   constructor(
-    private store: Store<any>
-
+    private store: Store<any>,
+    private ShowCaseService:ShowCaseService
   ) {
 
 
   }
 
   ngOnInit(): void {
+    this.loading$= this.store.select(selectLoading);
+
     this.store.dispatch(loadItems());
+
+    this.ShowCaseService.getDataApi()
+    .subscribe((response: ItemModel[]) => {
+      this.store.dispatch(loadedItems(
+        {items: response}
+      ));
+    });
+
+
 
   }
 
