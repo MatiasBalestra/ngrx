@@ -14,10 +14,7 @@ export class UiBlockItemComponent implements OnInit {
 
   items$: Observable<any> = new Observable();
 
-  constructor(private store: Store<AppState>) {
-
-
-  }
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.items$ = this.store.select(selectListItems);

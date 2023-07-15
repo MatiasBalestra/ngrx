@@ -7,6 +7,8 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { ROOT_REDUCERS } from './state/app.state';
+import { EffectsModule } from '@ngrx/effects';
+import { ItemsEffects } from './state/effects/items.effects';
 
 
 @NgModule({
@@ -18,7 +20,8 @@ import { ROOT_REDUCERS } from './state/app.state';
     AppRoutingModule,
     HttpClientModule,
     StoreModule.forRoot(ROOT_REDUCERS),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    EffectsModule.forRoot([ItemsEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]
